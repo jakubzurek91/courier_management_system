@@ -1,5 +1,5 @@
 """
-ASGI config for courier_management_system project.
+ASGI config for courier_management_system cms.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

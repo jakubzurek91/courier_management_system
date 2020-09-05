@@ -1,5 +1,5 @@
 """
-WSGI config for courier_management_system project.
+WSGI config for courier_management_system cms.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
