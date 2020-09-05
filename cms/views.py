@@ -13,7 +13,7 @@ class ParcelCreate(CreateView):
     model = Parcel
     fields = '__all__'
     template_name = "parcel/new_parcel.html"
-    success_url = "/cml/list/"
+    success_url = "/cms/list/"
 
 
 class ClientView(ListView):
