@@ -10,4 +10,9 @@ class Parcel(models.Model):
     phone_nb = models.IntegerField()
 
 class Client(models.Model):
-    id = models.ForeignKey()
+    id = models.ForeignKey(Parcel, on_delete=models.CASCADE)
+    name = models.CharField(max_length=20)
+    address = models.CharField(max_length=30)
+    zip_code = models.CharField(max_length=6)
+    phone_nb = models.IntegerField()
+
