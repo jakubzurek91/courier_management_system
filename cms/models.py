@@ -15,4 +15,5 @@ class Client(models.Model):
     address = models.CharField(max_length=30)
     zip_code = models.CharField(max_length=6)
     phone_nb = models.IntegerField()
+    email = models.CharField(max_length=30)
 
