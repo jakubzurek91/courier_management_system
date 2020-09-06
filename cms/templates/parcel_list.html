@@ -6,13 +6,14 @@
 </head>
 <body>
     <h1>Lista paczek</h1>
-    <table>
+    <table border="1" bgcolor="aqua">
         <tr>
             <th>#</th>
-            <th>Nazwisko</th>
+            <th>Adresat</th>
             <th>Adres</th>
             <th>Kod pocztowy</th>
             <th>Telefon</th>
+            <th>Client ID</th>
         </tr>
         {% for parcel in parcels %}
             <tr>

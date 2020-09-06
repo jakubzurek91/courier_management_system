@@ -11,17 +11,17 @@ class Client(models.Model):
     address = models.CharField(max_length=30)
     zip_code = models.CharField(max_length=6)
     phone_nb = models.IntegerField()
-    login = models.CharField(max_length=30)
+    login = models.CharField(max_length=30, unique=True)
     password = models.CharField(max_length=30)
 
 
 class Parcel(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20)
     address = models.CharField(max_length=30)
     zip_code = models.CharField(max_length=6)
     phone_nb = models.IntegerField()
-    client_id = models.ForeignKey(Client, on_delete=models.CASCADE)
+    client_id = models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
 
 
 class Courier(models.Model):
