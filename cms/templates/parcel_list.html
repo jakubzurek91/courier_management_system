@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Lista paczek</h1>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Nazwisko</th>
+            <th>Adres</th>
+            <th>Kod pocztowy</th>
+            <th>Telefon</th>
+        </tr>
+        {% for parcel in parcels %}
+            <tr>
+                <th>{{ parcel.id }}</th>
+                <th>{{ parcel.name }}</th>
+                <th>{{ parcel.address }}</th>
+                <th>{{ parcel.zip_code }}</th>
+                <th>{{ parcel.phone_nb }}</th>
+                <th>{{ parcel.client_id }}</th>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
