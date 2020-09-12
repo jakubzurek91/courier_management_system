@@ -1,8 +1,7 @@
-from django.db import models
-
 # Create your models here.
 from django.db import models
 from django.forms import CharField
+
 
 class Client(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -13,6 +12,10 @@ class Client(models.Model):
     phone_nb = models.IntegerField()
     login = models.CharField(max_length=30, unique=True)
     password = models.CharField(max_length=30)
+
+    @property
+    def client_name(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 class Parcel(models.Model):
