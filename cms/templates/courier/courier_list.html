@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Courier list</title>
+</head>
+<body>
+    <h1>Lista kurierów</h1>
+    <table border="1" bgcolor="hotpink">
+        <tr>
+            <th>#</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Telefon</th>
+        </tr>
+        {% for courier in couriers %}
+            <tr>
+                <th>{{ courier.id }}</th>
+                <th>{{ courier.first_name }}</th>
+                <th>{{ courier.last_name }}</th>
+                <th>{{ courier.phone_nb }}</th>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

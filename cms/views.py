@@ -4,15 +4,16 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.views.generic import CreateView, FormView, ListView, UpdateView, DeleteView
-
 from cms.forms import ParcelForm
 from cms.models import Parcel, Client
+from cms.models import Courier
 
 
 class ParcelView(LoginRequiredMixin, ListView):
     model = Parcel
     template_name = "parcel_list.html"
     context_object_name = "parcels"
+
 
 class ParcelFormView(FormView):
     form_class = ParcelForm
@@ -35,7 +36,6 @@ class ParcelFormView(FormView):
             form = ParcelForm()
             return render(request, 'add.html', {'form': form})
 
-
     def get(self, request):
         form = ParcelForm()
         return render(request, 'add.html', {'form': form})
@@ -57,10 +57,32 @@ class ParcelUpdateView(UpdateView):
                 phone_nb=request.POST['phone_nb'],
             )
 
+
 class ParcelDeleteView(DeleteView):
     model = Parcel
     template_name = 'delete_parcel.html'
     success_url = "/"
+
+
+class CourierView(ListView):
+    model = Courier
+    template_name = "courier/courier_list.html"
+    context_object_name = "couriers"
+
+
+class CourierFormView(CreateView):
+    model = Courier
+    fields = '__all__'
+    template_name = "courier/courier_new.html"
+    success_url = "../list/"
+
+
+class CourierUpdateView(UpdateView):
+    model = Courier
+    fields = '__all__'
+    template_name = "courier/courier_new.html"
+    success_url = "../list/"
+
 
 def HomePage(request):
     return render(request, "home_page.html")
