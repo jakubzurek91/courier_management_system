@@ -6,6 +6,7 @@
 </head>
 <body>
     <h1>Lista paczek</h1>
+    <a href="{% url "parcel_form" %}">Stwórz nowe zlecenie</a>
     <table border="1" bgcolor="aqua">
         <tr>
             <th>#</th>
@@ -13,16 +14,21 @@
             <th>Adres</th>
             <th>Kod pocztowy</th>
             <th>Telefon</th>
-            <th>Client ID</th>
+            <th>Użytkownik</th>
+            <th>Akcje</th>
         </tr>
         {% for parcel in parcels %}
             <tr>
-                <th>{{ parcel.id }}</th>
+                <th>{{ parcel.pk }}</th>
                 <th>{{ parcel.name }}</th>
                 <th>{{ parcel.address }}</th>
                 <th>{{ parcel.zip_code }}</th>
                 <th>{{ parcel.phone_nb }}</th>
-                <th>{{ parcel.client_id }}</th>
+                <th>{{ parcel.client_id.username }}</th>
+                <th>
+                    <a href="{% url "update_parcel" parcel.pk %}">Edytuj</a>
+                    <a href="{% url "delete_parcel" parcel.pk %}">Usuń</a>
+                </th>
             </tr>
         {% endfor %}
     </table>

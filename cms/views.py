@@ -1,21 +1,19 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import CreateView, FormView, ListView, UpdateView
-
+from django.views.generic import CreateView, FormView, ListView, UpdateView, DeleteView
 from cms.forms import ParcelForm
 from cms.models import Parcel, Client
 from cms.models import Courier
 
 
-class HomePage(ListView):
-    template_name = "home_page.html"
-
-class ParcelView(ListView):
+class ParcelView(LoginRequiredMixin, ListView):
     model = Parcel
     template_name = "parcel_list.html"
     context_object_name = "parcels"
+
 
 class ParcelFormView(FormView):
     form_class = ParcelForm
@@ -23,7 +21,7 @@ class ParcelFormView(FormView):
     success_url = '/cms/parcel/list'
 
     def post(self, request):
-        client = Client.objects.get()
+        client = Client.objects.get(user_ptr_id=3)
         form = ParcelForm(request.POST)
         if form.is_valid():
             parcel = Parcel.objects.create(
@@ -43,14 +41,6 @@ class ParcelFormView(FormView):
         return render(request, 'add.html', {'form': form})
 
 
-# def parcel_list(request):
-#     parcels = Parcel.objects.all()
-#
-#     return render(request, "parcel_list.html", {
-#         "parcels": parcels
-#     })
-
-
 class ParcelUpdateView(UpdateView):
     model = Parcel
     fields = '__all__'
@@ -58,7 +48,6 @@ class ParcelUpdateView(UpdateView):
     success_url = "../list/"
 
     def update(self, request):
-        client = Client.objects.get()
         form = ParcelForm(request.POST)
         if form.is_valid():
             parcel = Parcel.objects.update(
@@ -66,12 +55,13 @@ class ParcelUpdateView(UpdateView):
                 address=request.POST['address'],
                 zip_code=request.POST['zip_code'],
                 phone_nb=request.POST['phone_nb'],
-                client_id=client
             )
 
 
-def HomePage(request):
-    return render(request, "home_page.html")
+class ParcelDeleteView(DeleteView):
+    model = Parcel
+    template_name = 'delete_parcel.html'
+    success_url = "/"
 
 
 class CourierView(ListView):
@@ -93,3 +83,6 @@ class CourierUpdateView(UpdateView):
     template_name = "courier/courier_new.html"
     success_url = "../list/"
 
+
+def HomePage(request):
+    return render(request, "home_page.html")
