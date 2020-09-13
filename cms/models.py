@@ -18,6 +18,13 @@ class Client(models.Model):
         return f'{self.first_name} {self.last_name}'
 
 
+class Courier(models.Model):
+    id = models.IntegerField(primary_key=True)
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    phone_nb = models.IntegerField()
+
+
 class Parcel(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20)
@@ -25,10 +32,9 @@ class Parcel(models.Model):
     zip_code = models.CharField(max_length=6)
     phone_nb = models.IntegerField()
     client_id = models.ForeignKey(Client, on_delete=models.CASCADE, null=True)
+    courier_id = models.ForeignKey(Courier, on_delete=models.CASCADE, null=True)
 
 
-class Courier(models.Model):
-    id = models.IntegerField(primary_key=True)
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-    phone_nb = models.IntegerField()
+
+
+
