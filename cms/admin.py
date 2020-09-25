@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from cms.models import Parcel, Client, Courier
 
 admin.site.register(Parcel)

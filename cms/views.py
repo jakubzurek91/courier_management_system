@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
@@ -21,7 +22,8 @@ class ParcelFormView(FormView):
     success_url = '/cms/parcel/list'
 
     def post(self, request):
-        client = Client.objects.get(user_ptr_id=3)
+        print(request.user.get_username())
+        client = Client.objects.get(username=request.user.get_username()) #user_ptr_id=3
         form = ParcelForm(request.POST)
         if form.is_valid():
             parcel = Parcel.objects.create(
@@ -61,7 +63,7 @@ class ParcelUpdateView(UpdateView):
 class ParcelDeleteView(DeleteView):
     model = Parcel
     template_name = 'delete_parcel.html'
-    success_url = "/"
+    success_url = "/cms/parcel/list"
 
 
 class CourierView(ListView):

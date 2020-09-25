@@ -24,7 +24,7 @@
                 <th>{{ parcel.address }}</th>
                 <th>{{ parcel.zip_code }}</th>
                 <th>{{ parcel.phone_nb }}</th>
-                <th>{{ parcel.client_id.username }}</th>
+                <th>{{ parcel.client_id.client_name }}</th>
                 <th>
                     <a href="{% url "update_parcel" parcel.pk %}">Edytuj</a>
                     <a href="{% url "delete_parcel" parcel.pk %}">Usuń</a>

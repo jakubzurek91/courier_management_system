@@ -7,7 +7,7 @@ class ParcelForm(forms.ModelForm):
     class Meta:
         model = Parcel
         fields = '__all__'
-        exclude = ['id', 'client_id']
+        exclude = ['id', 'client_id', 'courier_id']
         labels = {
             '_id': 'ID',
             'name': 'Adresat',
