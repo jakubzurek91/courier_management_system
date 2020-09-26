@@ -1,0 +1,33 @@
+{%  extends "core.html" %}
+{% block content %}
+<h1>Lista paczek</h1>
+    <a href="{% url "parcel_form" %}">Stwórz nowe zlecenie</a>
+    <table border="1" bgcolor="aqua">
+        <tr>
+            <th>#</th>
+            <th>Adresat</th>
+            <th>Adres</th>
+            <th>Kod pocztowy</th>
+            <th>Telefon</th>
+            <th>Użytkownik</th>
+            <th>Akcje</th>
+        </tr>
+        <form action="/cms/parcel/list/" method="POST">
+        {% for parcel in parcels %}
+            <tr>
+                <th>{{ parcel.pk }}</th>
+                <th>{{ parcel.name }}</th>
+                <th>{{ parcel.address }}</th>
+                <th>{{ parcel.zip_code }}</th>
+                <th>{{ parcel.phone_nb }}</th>
+                <th>{{ parcel.client_id.client_name }}</th>
+                <th>
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="Zapisz">
+                </th>
+            </tr>
+            </form>
+        {% endfor %}
+    </table>
+{% endblock %}

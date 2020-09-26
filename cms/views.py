@@ -5,15 +5,17 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.views.generic import CreateView, FormView, ListView, UpdateView, DeleteView
-from cms.forms import ParcelForm
-from cms.models import Parcel, Client
+from cms.forms import ParcelForm, ParcelUpdateForm, ParcelStatusForm
+from cms.models import Parcel, Client, STATUS_CHOICES
 from cms.models import Courier
+from courier_management_system import settings
 
 
 class ParcelView(LoginRequiredMixin, ListView):
     model = Parcel
-    template_name = "parcel_list.html"
+    template_name = "client_parcel_list.html"
     context_object_name = "parcels"
+    login_url = settings.LOGIN_URL
 
 
 class ParcelFormView(FormView):
@@ -22,8 +24,7 @@ class ParcelFormView(FormView):
     success_url = '/cms/parcel/list'
 
     def post(self, request):
-        print(request.user.get_username())
-        client = Client.objects.get(username=request.user.get_username()) #user_ptr_id=3
+        client = Client.objects.get(username=request.user.get_username())
         form = ParcelForm(request.POST)
         if form.is_valid():
             parcel = Parcel.objects.create(
@@ -31,7 +32,8 @@ class ParcelFormView(FormView):
                 address=request.POST['address'],
                 zip_code=request.POST['zip_code'],
                 phone_nb=request.POST['phone_nb'],
-                client_id=client
+                client_id=client,
+                status=0,
             )
             return HttpResponseRedirect('../list/')
         else:
@@ -45,20 +47,9 @@ class ParcelFormView(FormView):
 
 class ParcelUpdateView(UpdateView):
     model = Parcel
-    fields = '__all__'
-    template_name = "add.html"
+    fields = ['name', 'address', 'zip_code', 'phone_nb']
+    template_name = "update.html"
     success_url = "../list/"
-
-    def update(self, request):
-        form = ParcelForm(request.POST)
-        if form.is_valid():
-            parcel = Parcel.objects.update(
-                name=request.POST['name'],
-                address=request.POST['address'],
-                zip_code=request.POST['zip_code'],
-                phone_nb=request.POST['phone_nb'],
-            )
-
 
 class ParcelDeleteView(DeleteView):
     model = Parcel
@@ -75,6 +66,7 @@ class CourierView(ListView):
 class CourierFormView(CreateView):
     model = Courier
     fields = '__all__'
+    exclude = ['id', 'is_staff', 'is_active', 'date_joined']
     template_name = "courier/courier_new.html"
     success_url = "../list/"
 
@@ -88,3 +80,42 @@ class CourierUpdateView(UpdateView):
 
 def HomePage(request):
     return render(request, "home_page.html")
+
+# def update_parcel_status(request, pk=0):
+#     parcel = None
+#     if int(pk or 0):
+#         parcel = parcel.objects.get(pk=pk)
+#
+#     if request.method == "POST":
+#         parcel.status = request.POST[status]
+#         parcel.save()
+#     return HttpResponseRedirect('../list/')
+
+class CourierParcelList(LoginRequiredMixin, FormView):
+    form_class = ParcelStatusForm
+    template_name = "courier_parcel_list.html"
+    context_object_name = "parcels"
+    success_url = '/cms/parcel/list'
+    login_url = settings.LOGIN_URL
+
+    def post(self, request):
+        form = ParcelStatusForm(request.POST)
+        if form.is_valid():
+            parcel = Parcel.objects.update(
+                status=request.POST['status'],
+            )
+            return HttpResponseRedirect('../list/')
+
+    def get(self, request):
+        parcels = Parcel.objects.all()
+        form = ParcelStatusForm(request.GET)
+        return render(request, 'courier_parcel_list.html', {'form': form, 'parcels':parcels})
+
+
+
+class ParcelUpdateStatus(UpdateView):
+    model = Parcel
+    fields = ['status']
+    template_name = "set_parcel_status.html"
+    success_url = "../list/"
+

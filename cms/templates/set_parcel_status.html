@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>Lista paczek</h1>
-    <a href="{% url "parcel_form" %}">Stwórz nowe zlecenie</a>
+{%  extends "core.html" %}
+{% block content %}
+<h1>Lista paczek</h1>
     <table border="1" bgcolor="aqua">
         <tr>
             <th>#</th>
@@ -15,22 +9,24 @@
             <th>Kod pocztowy</th>
             <th>Telefon</th>
             <th>Użytkownik</th>
-            <th>Akcje</th>
+            <th>Ustaw status</th>
         </tr>
-        {% for parcel in parcels %}
-            <tr>
+            <tr>{% for parcel in parcels %}
                 <th>{{ parcel.pk }}</th>
                 <th>{{ parcel.name }}</th>
                 <th>{{ parcel.address }}</th>
                 <th>{{ parcel.zip_code }}</th>
                 <th>{{ parcel.phone_nb }}</th>
                 <th>{{ parcel.client_id.client_name }}</th>
-                <th>
-                    <a href="{% url "update_parcel" parcel.pk %}">Edytuj</a>
-                    <a href="{% url "delete_parcel" parcel.pk %}">Usuń</a>
-                </th>
+                <th><form>
+                    <select name="status">
+                        {% for status in statuses %}
+                        <option value="{{ status.0 }}" {% if parcel.status.0 == status %} selected {% endif %}> {{ status.1 }} </option>
+                        {% endfor %}
+                    </select>
+                <input type="submit" value="Zapisz">
+                </form></th>
             </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+{% endblock %}
